@@ -2,6 +2,7 @@
 //current day and time
 var currentDay = new Date();
 var currentHour = currentDay.getHours();
+$(".lead").append(currentDay); 
 // hour object for the if statements
 var hourConversion = [
   { regHour: "9AM", utc: "9" },
@@ -15,10 +16,9 @@ var hourConversion = [
   { regHour: "5PM", utc: "17" },
 ];
 var plannerItems = [];
-var plannerData = JSON.parse(localStorage.getItem("savedItems"));
+var retrievedData = JSON.parse(localStorage.getItem("savedItems"));
+console.log(retrievedData)
 
-console.log("today is " + currentDay);
-console.log("the current hour is " + currentHour);
 
 //Function definitions
 function createSlots() {
@@ -46,12 +46,7 @@ function exportToStorage(){
     //JSON.stringify(plannerItems);
     //console.log(plannerItems);
     localStorage.setItem("savedItems", JSON.stringify(plannerItems));
-    console.log(plannerData);
-}
-
-function writeToPlanner(){
-    //$("hour").append(savedInput.text)
-    console.log(plannerData);
+    console.log(plannerItems);
 }
 
 /* add content into the time slots */
@@ -76,10 +71,17 @@ $(".container").on("click", ".saveBtn", function (event) {
   //console.log(savedInput);
   var savedHour = $(this).siblings(".hour").text();
   //console.log(savedHour);
-  plannerItems.push(savedInput, savedHour);
+  plannerItems.push({hourKey:savedInput, savedHour});
   // console.log(plannerItems);
+  /* if( plannerItems.savedInput){
+      return
+  } */
+  /* if(savedHour == retrievedDAta.retrievedData.hourKey.savedInput){
+      removeItem(hourKey.savedInput); */
+    $(".textarea").append(savedInput);
+//}
   exportToStorage();
-  writeToPlanner();
+  
 });
 
 //Add events

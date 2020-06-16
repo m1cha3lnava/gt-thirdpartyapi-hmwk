@@ -14,12 +14,11 @@ var hourConversion = [
   { regHour: "4PM", utc: "16" },
   { regHour: "5PM", utc: "17" },
 ];
+var plannerItems = [];
+var plannerData = JSON.parse(localStorage.getItem("savedItems"));
+
 console.log("today is " + currentDay);
 console.log("the current hour is " + currentHour);
-/* 
-    past events 
-    current event
-    future event */
 
 //Function definitions
 function createSlots() {
@@ -29,11 +28,11 @@ function createSlots() {
     .addClass("col-1 hour")
     .text(hourConversion[i].regHour);
   var plannerCol = $("<textarea>").addClass("col-10 ");
-  var saveCol = $("<button>").addClass("col-1 saveBtn").text("Save");
+  var saveCol = $("<button>").addClass("col-1 saveBtn ").text("Save");
   newSlot.append(timeCol).append(plannerCol).append(saveCol);
   $(".container").append(newSlot);
-  console.log(hourConversion[i].utc);
-  console.log(currentHour);
+  /*   console.log(hourConversion[i].utc);
+  console.log(currentHour); */
   if (hourConversion[i].utc == currentHour) {
     plannerCol.addClass("present");
   } else if (hourConversion[i].utc < currentHour) {
@@ -43,7 +42,20 @@ function createSlots() {
   }
 }
 
+function exportToStorage(){
+    //JSON.stringify(plannerItems);
+    //console.log(plannerItems);
+    localStorage.setItem("savedItems", JSON.stringify(plannerItems));
+    console.log(plannerData);
+}
+
+function writeToPlanner(){
+    //$("hour").append(savedInput.text)
+    console.log(plannerData);
+}
+
 /* add content into the time slots */
+
 
 /*adding an event to local storage
     submit event
@@ -56,7 +68,18 @@ for (var i = 0; i < 9; i++) {
 }
 
 //Event listeners
-/* listen for form submission button
- */
+//listen for form submission button
+$(".container").on("click", ".saveBtn", function (event) {
+  event.preventDefault();
+  //console.log(this);
+  var savedInput = $(this).siblings("textArea").val();
+  //console.log(savedInput);
+  var savedHour = $(this).siblings(".hour").text();
+  //console.log(savedHour);
+  plannerItems.push(savedInput, savedHour);
+  // console.log(plannerItems);
+  exportToStorage();
+  writeToPlanner();
+});
 
 //Add events
